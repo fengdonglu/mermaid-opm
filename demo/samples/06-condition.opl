@@ -1,0 +1,6 @@
+opm
+Order is physical.
+Order can be paid or unpaid.
+Handling is physical.
+Handling consumes Order.
+Handling occurs if Order is paid.

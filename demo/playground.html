@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>mermaid-opm — OPL playground</title>
+  <style>
+    :root { color-scheme: light dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font: 15px/1.5 system-ui, sans-serif; }
+    header { padding: 16px 24px; border-bottom: 1px solid #8884; position: sticky; top: 0; background: Canvas; z-index: 10; }
+    header h1 { margin: 0 0 4px; font-size: 20px; }
+    header p { margin: 0; opacity: 0.75; }
+    header a { color: inherit; }
+    .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 24px; border-bottom: 1px solid #8884; position: sticky; top: 72px; background: Canvas; z-index: 9; }
+    .toolbar label { font-size: 13px; opacity: 0.8; }
+    .toolbar select, .toolbar button { font: inherit; padding: 5px 9px; border: 1px solid #8884; border-radius: 6px; background: transparent; cursor: pointer; }
+    main { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 24px; align-items: stretch; }
+    .panel { border: 1px solid #8884; border-radius: 8px; padding: 12px 14px; min-width: 0; display: flex; flex-direction: column; }
+    .panel h2 { margin: 0 0 8px; font-size: 15px; opacity: 0.8; font-weight: 600; }
+    textarea { flex: 1; width: 100%; min-height: 360px; resize: vertical; font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 10px; border-radius: 6px; border: 1px solid #8884; background: #8881; }
+    #view { flex: 1; overflow: auto; display: flex; align-items: center; justify-content: center; min-height: 360px; }
+    #view svg { max-width: 100%; height: auto; }
+    .diagnostics { margin: 0 24px 32px; border: 1px solid #8884; border-radius: 8px; padding: 10px 14px; }
+    .diagnostics h2 { margin: 0 0 6px; font-size: 15px; opacity: 0.8; font-weight: 600; }
+    .diagnostics ul { margin: 0; padding-left: 18px; }
+    .diagnostics li { font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .severity-error { color: #c0392b; }
+    .severity-warning { color: #b7791f; }
+    .ok { opacity: 0.7; }
+    @media (max-width: 900px) { main { grid-template-columns: 1fr; } .toolbar { top: 0; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>OPL playground</h1>
+    <p>Type Object-Process Language on the left; the Object-Process Diagram and diagnostics update live. See the <a href="./index.html">gallery</a> for the Mermaid-plugin usage.</p>
+  </header>
+  <div class="toolbar">
+    <label for="samples">Examples</label>
+    <select id="samples"></select>
+    <button id="download" type="button">Download SVG</button>
+    <button id="copy" type="button">Copy SVG</button>
+    <button id="clear" type="button">Clear</button>
+  </div>
+  <main>
+    <section class="panel">
+      <h2>OPL source</h2>
+      <textarea id="editor" spellcheck="false" aria-label="OPL source"></textarea>
+    </section>
+    <section class="panel">
+      <h2>Rendered OPD</h2>
+      <div id="view"></div>
+    </section>
+  </main>
+  <section class="diagnostics" aria-live="polite">
+    <h2>Diagnostics</h2>
+    <div id="diagnostics" class="ok">No diagnostics.</div>
+  </section>
+  <script type="module">
+    import { renderSvg, renderModel } from '../dist/mermaid-opm.mjs';
+    import examples from './examples.mjs';
+
+    const editor = document.getElementById('editor');
+    const view = document.getElementById('view');
+    const diagEl = document.getElementById('diagnostics');
+    const samplesEl = document.getElementById('samples');
+
+    let timer = 0;
+    let lastSvg = '';
+
+    function showDiagnostics(diagnostics) {
+      if (diagnostics.length === 0) {
+        diagEl.className = 'ok';
+        diagEl.textContent = 'No diagnostics.';
+        return;
+      }
+      diagEl.className = '';
+      diagEl.innerHTML = '<ul></ul>';
+      const ul = diagEl.querySelector('ul');
+      for (const d of diagnostics) {
+        const li = document.createElement('li');
+        li.className = `severity-${d.severity}`;
+        li.textContent = `${d.severity}: ${d.code} @${d.line}:${d.column} ${d.message}`;
+        ul.appendChild(li);
+      }
+    }
+
+    function render() {
+      const source = editor.value;
+      if (!source.trim()) {
+        view.innerHTML = '';
+        lastSvg = '';
+        showDiagnostics([]);
+        return;
+      }
+      try {
+        view.innerHTML = renderSvg(source);
+        lastSvg = view.innerHTML;
+        showDiagnostics(renderModel(source).diagnostics);
+      } catch (e) {
+        view.innerHTML = '';
+        lastSvg = '';
+        showDiagnostics([{ severity: 'error', code: 'render-failed', message: String(e.message || e), line: 1, column: 1 }]);
+      }
+    }
+
+    function scheduleRender() {
+      clearTimeout(timer);
+      timer = setTimeout(render, 300);
+    }
+
+    editor.addEventListener('input', scheduleRender);
+
+    for (let i = 0; i < examples.length; i++) {
+      const opt = document.createElement('option');
+      opt.value = examples[i].sample;
+      opt.textContent = `${String(i + 1).padStart(2, '0')} · ${examples[i].title}`;
+      samplesEl.appendChild(opt);
+    }
+
+    samplesEl.addEventListener('change', async () => {
+      const text = await (await fetch(`./samples/${samplesEl.value}`)).text();
+      editor.value = text;
+      render();
+    });
+
+    document.getElementById('download').addEventListener('click', () => {
+      if (!lastSvg) return;
+      const url = URL.createObjectURL(new Blob([lastSvg], { type: 'image/svg+xml' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'opd.svg';
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('copy').addEventListener('click', () => {
+      if (lastSvg && navigator.clipboard) navigator.clipboard.writeText(lastSvg);
+    });
+
+    document.getElementById('clear').addEventListener('click', () => {
+      editor.value = '';
+      render();
+    });
+
+    (async () => {
+      const text = await (await fetch(`./samples/${examples[0].sample}`)).text();
+      editor.value = text;
+      samplesEl.value = examples[0].sample;
+      render();
+    })();
+  </script>
+</body>
+</html>

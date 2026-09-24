@@ -1,0 +1,8 @@
+opm
+Order is physical.
+Order can be new, open, or closed.
+Order is initial new.
+Order is final closed.
+Handling is physical.
+Handling consumes Order.
+Handling affects Order.

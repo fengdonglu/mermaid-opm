@@ -1,0 +1,6 @@
+opm
+Document is informatical.
+Order is informatical.
+Order is a Document.
+Special Order is informatical.
+Special Order is an instance of Order.

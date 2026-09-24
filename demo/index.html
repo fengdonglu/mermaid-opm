@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>mermaid-opm — OPL to OPD demo</title>
+  <link rel="stylesheet" href="./demo.css" />
+</head>
+<body>
+  <header class="site-header">
+    <h1>mermaid-opm</h1>
+    <p class="tagline">Render Object-Process Language (ISO 19450) as Object-Process Diagrams — in Mermaid or from the CLI. <a href="./playground.html">Try the OPL playground →</a></p>
+    <nav id="toc" aria-label="Examples"></nav>
+  </header>
+  <main id="examples"></main>
+  <script type="importmap">{"imports":{"mermaid":"https://cdn.jsdelivr.net/npm/mermaid@12/dist/mermaid.esm.min.mjs"}}</script>
+  <script type="module">
+    import mermaid from 'mermaid';
+    import { registerOpm } from '../dist/mermaid-opm.mjs';
+    import examples from './examples.mjs';
+    // Disable auto-run before any await so mermaid does not process an empty .mermaid on DOMContentLoaded.
+    mermaid.initialize({ startOnLoad: false });
+    await registerOpm();
+
+    const header = document.querySelector('.site-header');
+    const toc = document.getElementById('toc');
+    const main = document.getElementById('examples');
+
+    for (let i = 0; i < examples.length; i++) {
+      const ex = examples[i];
+      const num = String(i + 1).padStart(2, '0');
+
+      const link = document.createElement('a');
+      link.href = `#ex-${ex.id}`;
+      link.textContent = `${num} · ${ex.title}`;
+      toc.appendChild(link);
+
+      const section = document.createElement('section');
+      section.className = 'example';
+      section.id = `ex-${ex.id}`;
+      section.innerHTML =
+        '<div class="panel source">' +
+          `<h2><span class="num">${num}</span> ${escapeHtml(ex.title)}</h2>` +
+          `<p class="explanation">${escapeHtml(ex.explanation)}</p>` +
+          '<pre><code class="opl"></code></pre>' +
+        '</div>' +
+        '<div class="panel output">' +
+          '<div class="diagram"></div>' +
+        '</div>';
+      main.appendChild(section);
+      ex._section = section;
+    }
+
+    function syncScrollOffset() {
+      const offset = header.offsetHeight + 12;
+      for (const section of main.children) section.style.scrollMarginTop = `${offset}px`;
+    }
+    syncScrollOffset();
+    window.addEventListener('resize', syncScrollOffset);
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+    }
+
+    async function render(ex) {
+      const section = ex._section;
+      const codeEl = section.querySelector('.opl');
+      const diagram = section.querySelector('.diagram');
+      try {
+        const source = await (await fetch(`./samples/${ex.sample}`)).text();
+        codeEl.textContent = source.trim();
+        const { svg } = await mermaid.render(`opm-${ex.id}`, source);
+        diagram.innerHTML = svg;
+      } catch (e) {
+        diagram.innerHTML = '<p class="error"></p>';
+        diagram.querySelector('.error').textContent = String(e.message || e);
+      }
+    }
+
+    for (const ex of examples) render(ex);
+  </script>
+</body>
+</html>

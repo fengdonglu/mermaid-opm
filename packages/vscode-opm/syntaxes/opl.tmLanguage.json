@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "OPL",
+  "scopeName": "source.opl",
+  "patterns": [
+    { "match": "//.*$", "name": "comment.line.double-slash.opl" },
+    { "match": "^\\s*opm\\s*$", "name": "keyword.control.header.opl" },
+    { "match": "\\b(is|and|can|be|or|by|of|if|from|to|an|initial|final)\\b", "name": "keyword.operator.opl" },
+    { "match": "\\b(physical|informatical|systemic|environmental)\\b", "name": "storage.modifier.opl" },
+    { "match": "\\b(consumes|yields|affects|requires|occurs|exists|changes|handles|consists|exhibits|instance)\\b", "name": "keyword.other.link.opl" }
+  ]
+}

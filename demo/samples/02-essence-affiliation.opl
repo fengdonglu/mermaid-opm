@@ -1,0 +1,6 @@
+opm
+Customer is physical and environmental.
+Order is informatical.
+Processing is informatical.
+Processing consumes Order.
+Processing affects Customer.

@@ -1,0 +1,8 @@
+opm
+Clerk is physical and environmental.
+System is physical.
+Order is physical.
+Handling is physical.
+Handling consumes Order.
+Clerk handles Handling.
+Handling requires System.

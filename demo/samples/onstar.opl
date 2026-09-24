@@ -1,0 +1,11 @@
+opm
+Driver is physical and environmental.
+Driver is initial idle.
+Handling occurs if Driver is idle.
+Order is physical.
+Handling handles Order.
+Handling requires System.
+Clerk handles Handling.
+Handling consumes Order.
+Handling yields Receipt.
+Receipt is an instance of Document.

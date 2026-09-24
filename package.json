@@ -1,0 +1,69 @@
+{
+  "name": "mermaid-opm",
+  "version": "0.1.0",
+  "description": "Mermaid external diagram plugin and CLI that renders ISO 19450 OPL into OPD",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fengdonglu/mermaid-opm"
+  },
+  "homepage": "https://github.com/fengdonglu/mermaid-opm#readme",
+  "bugs": {
+    "url": "https://github.com/fengdonglu/mermaid-opm/issues"
+  },
+  "keywords": [
+    "mermaid",
+    "opm",
+    "opl",
+    "opd",
+    "iso-19450",
+    "object-process-methodology"
+  ],
+  "bin": {
+    "opm2svg": "./dist/cli/cli.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js"
+    },
+    "./browser": "./dist/mermaid-opm.mjs"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh.md"
+  ],
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node build.mjs",
+    "prepublishOnly": "npm run build",
+    "dev": "node scripts/serve.mjs",
+    "serve": "node scripts/serve.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "^1.1.4"
+  },
+  "peerDependencies": {
+    "mermaid": ">=11"
+  },
+  "peerDependenciesMeta": {
+    "mermaid": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "jsdom": "^25.0.0",
+    "mermaid": "^12.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

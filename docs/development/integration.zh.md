@@ -15,13 +15,17 @@
 插件使用的浏览器打包产物。`mermaid`（>= 11）是**可选**的 peer 依赖 —— 运行时只有
 `registerOpm()` 需要它。
 
+> **尚未发布。** `mermaid-opm` 未上 npm，`from 'mermaid-opm'` 无法解析。请先构建仓库
+> （`npm run build`），再从构建产物导入（如下所示：`./dist/index.js`、
+> `./dist/mermaid-opm.mjs`）。
+
 ## 打包器（Vite、webpack）
 
 两者都会替你解析裸 `mermaid` 说明符以及包的 `exports` 映射。
 
 ```js
 // Vite 或 webpack
-import { renderSvg, registerOpm } from 'mermaid-opm';
+import { renderSvg, registerOpm } from './dist/index.js';
 import mermaid from 'mermaid';
 
 const svg = renderSvg('Order is physical.\nHandling is physical.\nHandling consumes Order.');
@@ -35,7 +39,7 @@ await registerOpm();
 ## Node 中的纯 ESM
 
 ```js
-import { renderSvg, renderModel } from 'mermaid-opm';
+import { renderSvg, renderModel } from './dist/index.js';
 
 const svg = renderSvg('Order is physical.\nHandling is physical.');
 const model = renderModel('Order is physical.');
@@ -55,15 +59,15 @@ console.log(model.diagnostics);
   渲染页面。
 
 ```js
-import { renderSvg } from 'mermaid-opm';
+import { renderSvg } from './dist/index.js';
 
 const svg = renderSvg(source); // 字符串，无需 DOM
 ```
 
-## 浏览器中的 CDN
+## 浏览器 bundle
 
-直接从 CDN 加载浏览器打包产物。它内部保留裸 `import('mermaid')`，因此需要为
-`mermaid` 提供 import map：
+托管构建出的 `dist/mermaid-opm.mjs`（**尚未发布到 CDN**）。它内部保留裸
+`import('mermaid')`，因此需要为 `mermaid` 提供 import map：
 
 ```html
 <script type="importmap">
@@ -75,7 +79,7 @@ const svg = renderSvg(source); // 字符串，无需 DOM
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.0/dist/mermaid-opm.mjs';
+  import { registerOpm } from './dist/mermaid-opm.mjs'; // 按你托管的路径调整
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
@@ -97,7 +101,7 @@ const svg = renderSvg(source); // 字符串，无需 DOM
 批量或 CI 场景可安装 CLI，或用 `npx` 运行：
 
 ```bash
-npx opm2svg model.opl -o model.svg
+node dist/cli/cli.js model.opl -o model.svg
 ```
 
 见 [CLI](../usage/cli.zh.md)。

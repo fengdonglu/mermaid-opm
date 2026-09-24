@@ -1,6 +1,6 @@
 {
   "name": "mermaid-opm-lsp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Language Server for OPL (ISO 19450) used by mermaid-opm",
   "type": "module",
   "license": "MIT",

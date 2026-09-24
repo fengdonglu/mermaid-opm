@@ -21,7 +21,7 @@
 
 - [架构](development/architecture.zh.md) —— 分层与数据流。
 - [构建与测试](development/build-and-test.zh.md) —— 命令与构建产物。
-- [集成](development/integration.zh.md) —— 打包器、Node/SSR 与 CDN。
+- [集成](development/integration.zh.md) —— 打包器、Node/SSR 与浏览器 bundle。
 - [扩展](development/extending.zh.md) —— 新增链类型、主题令牌或示例。
 - [路线图](development/roadmap.zh.md) —— v1 之后的计划工作。
 

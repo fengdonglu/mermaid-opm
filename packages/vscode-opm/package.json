@@ -1,6 +1,6 @@
 {
   "name": "mermaid-opm-vscode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "fengdonglu",
   "description": "VS Code support for OPL (ISO 19450) — syntax highlighting, diagnostics, preview",
   "type": "module",

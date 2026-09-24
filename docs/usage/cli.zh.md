@@ -4,6 +4,8 @@
 
 `opm2svg` 把 `.opl` 文件转换为 SVG 对象-过程图，并把解析模型的诊断打印到 stderr。
 
+> **尚未发布。** `mermaid-opm` 未上 npm，因此没有全局安装的 `opm2svg` 命令。请从仓库构建后用 `node dist/cli/cli.js <input.opl> ...` 运行；执行 `npm link` 后可直接使用 `opm2svg`。下文示例均用 `node dist/cli/cli.js`。
+
 ## 用法
 
 ```
@@ -60,19 +62,19 @@ Handling yields Handled Order.
 转换为 `model.svg`（默认输出路径）：
 
 ```bash
-npx opm2svg model.opl
+node dist/cli/cli.js model.opl
 ```
 
 指定输出路径并同时导出模型：
 
 ```bash
-npx opm2svg model.opl -o out/diagram.svg --json out/diagram.json
+node dist/cli/cli.js model.opl -o out/diagram.svg --json out/diagram.json
 ```
 
 在脚本中使用，出错即失败：
 
 ```bash
-npx opm2svg model.opl -o model.svg || exit 1
+node dist/cli/cli.js model.opl -o model.svg || exit 1
 ```
 
 ## 另见

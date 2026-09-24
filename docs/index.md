@@ -27,7 +27,7 @@ For people building on or extending `mermaid-opm`.
 
 - [Architecture](development/architecture.md) — layers and data flow.
 - [Build and test](development/build-and-test.md) — commands and build outputs.
-- [Integration](development/integration.md) — bundlers, Node/SSR, and the CDN.
+- [Integration](development/integration.md) — bundlers, Node/SSR, and the browser bundle.
 - [Extending](development/extending.md) — add a link kind, theme token, or
   sample.
 - [Roadmap](development/roadmap.md) — planned work after v1.

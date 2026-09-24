@@ -21,7 +21,7 @@
     {
       "label": "OPM check",
       "type": "shell",
-      "command": "npx opm2svg \"${file}\" -o \"${file}.svg\"",
+      "command": "node dist/cli/cli.js \"${file}\" -o \"${file}.svg\"",
       "problemMatcher": {
         "owner": "opm",
         "fileLocation": ["relative", "${workspaceFolder}"],
@@ -46,7 +46,7 @@
 想要实时体验，就依赖本库并直接读取诊断。解析器从不抛异常，因此可以（防抖后）在每次按键时安全调用：
 
 ```ts
-import { renderModel } from 'mermaid-opm';
+import { renderModel } from './dist/index.js'; // 构建仓库之后
 
 const model = renderModel(source);
 for (const d of model.diagnostics) {

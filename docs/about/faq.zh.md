@@ -25,7 +25,7 @@ GitHub 的 Markdown 渲染器不会加载第三方 Mermaid 插件，因此 `opm`
 - **预渲染为 SVG。** 用 [`opm2svg` CLI](../usage/cli.zh.md) 处理源码，提交结果并嵌入：
 
   ```bash
-  npx opm2svg model.opl -o model.svg
+  node dist/cli/cli.js model.opl -o model.svg
   ```
 
   然后在 Markdown 中以图片引用 `model.svg`。

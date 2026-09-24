@@ -8,7 +8,7 @@
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from 'mermaid-opm';
+import { registerOpm } from './dist/mermaid-opm.mjs'; // 构建出的浏览器 bundle
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();

@@ -6,13 +6,11 @@
 
 ## 安装
 
-扩展**尚未发布到 Marketplace**。在发布之前，从 VSIX 安装：
+扩展尚未发布到任何扩展市场。请从 VSIX 安装：
 
 1. 获取 `mermaid-opm-vscode-*.vsix` 文件——可从项目的 GitHub **Releases** 下载（Release 工作流会在每个 `v*` tag 上附带该文件），或在本地 `npm run build` 后执行 `npm run package:vsix -w mermaid-opm-vscode` 自行打包。
 2. 在 VS Code 中打开命令面板，运行 **Extensions: Install from VSIX…**，选择该文件。
 3. 按提示重新加载。
-
-扩展发布后，第 2 步可改为在扩展视图中搜索 `mermaid-opm-vscode`；该 Marketplace 途径是为未来版本预留的占位说明。
 
 需要 VS Code **1.94** 或更高版本。
 

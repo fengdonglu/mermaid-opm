@@ -5,7 +5,7 @@
 ![OPL 源码与其渲染的 OPD 并排 —— 演示画廊](assets/gallery.png)
 
 [![CI](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml/badge.svg)](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/mermaid-opm.svg)](https://www.npmjs.com/package/mermaid-opm)
+[![Latest release](https://img.shields.io/github/v/release/fengdonglu/mermaid-opm)](https://github.com/fengdonglu/mermaid-opm/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 [English](README.md) | 中文
@@ -21,13 +21,18 @@
 - **Mermaid 外部图表插件**——编写 `opm` 代码块，由 Mermaid 在浏览器中渲染；
 - **CLI**（`opm2svg`）——用于批量转换与 CI。
 
-## 安装
+## 安装（尚未发布）
+
+`mermaid-opm` **尚未发布到 npm**，也没有 VS Code Marketplace 条目。目前请从仓库自行构建使用：
 
 ```bash
-npm i mermaid-opm mermaid
+git clone https://github.com/fengdonglu/mermaid-opm
+cd mermaid-opm
+npm install
+npm run build
 ```
 
-`mermaid`（>= 11）是可选的 peer 依赖：只有使用 Mermaid 插件时才需要安装。浏览器用户也可以跳过 npm，直接从 CDN 加载两者。插件的浏览器打包产物内部保留裸 `import('mermaid')`，因此页面必须用 import map 把 `mermaid` 映射到 ESM URL：
+构建会产出 `dist/index.js`（Node 用的库/插件 API）、`dist/mermaid-opm.mjs`（Mermaid 插件的浏览器 bundle）与 `dist/cli/cli.js`（`opm2svg` CLI）。浏览器中使用 Mermaid 插件时，请托管构建出的 `dist/mermaid-opm.mjs`；该 bundle 内部保留裸 `import('mermaid')`，因此需用 import map 把 `mermaid` 映射到 ESM URL：
 
 ```html
 <script type="importmap">
@@ -39,14 +44,12 @@ npm i mermaid-opm mermaid
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.0/dist/mermaid-opm.mjs';
+  import { registerOpm } from './dist/mermaid-opm.mjs'; // 按你托管的路径调整
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
 </script>
 ```
-
-插件的浏览器 bundle 即 `./browser` 导出的 `dist/mermaid-opm.mjs`；它需要被托管或作为静态资源提供，而不是从包根导入。
 
 ## 快速开始 —— Mermaid 插件
 
@@ -54,7 +57,7 @@ npm i mermaid-opm mermaid
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from 'mermaid-opm';
+import { registerOpm } from './dist/mermaid-opm.mjs'; // 构建出的浏览器 bundle
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -83,9 +86,11 @@ Handled Order is physical.
 ## 快速开始 —— CLI
 
 ```bash
-npx opm2svg model.opl -o model.svg
-npx opm2svg model.opl -o model.svg --json model.json
+node dist/cli/cli.js model.opl -o model.svg
+node dist/cli/cli.js model.opl -o model.svg --json model.json
 ```
+
+（执行 `npm link` 后可直接使用 `opm2svg` 命令。）
 
 输入文件会转换为 SVG（默认输出名为输入名加 `.svg` 后缀）。`--json` 会额外写出解析后的模型及其诊断。存在 `error` 级诊断时以非零码退出；未知参数会以用法错误拒绝。
 

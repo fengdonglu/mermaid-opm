@@ -10,8 +10,8 @@ stdio.
 
 ## Install
 
-The extension is **not published to the Marketplace yet**. Until it is, install
-it from a VSIX:
+The extension is not published to any extension registry yet. Install it from a
+VSIX:
 
 1. Get the `mermaid-opm-vscode-*.vsix` file — download it from the project's
    GitHub **Releases** (the release workflow attaches it to each `v*` tag), or
@@ -20,10 +20,6 @@ it from a VSIX:
 2. In VS Code, open the Command Palette, run **Extensions: Install from
    VSIX…**, and pick the file.
 3. Reload when prompted.
-
-Once the extension is published, the same dialog's **Install from VSIX…** step
-is replaced by searching for `mermaid-opm-vscode` in the Extensions view; that
-Marketplace path is a placeholder for a future release.
 
 VS Code **1.94** or newer is required.
 

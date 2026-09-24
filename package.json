@@ -1,6 +1,6 @@
 {
   "name": "mermaid-opm",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Mermaid external diagram plugin and CLI that renders ISO 19450 OPL into OPD",
   "type": "module",
   "license": "MIT",

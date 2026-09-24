@@ -38,4 +38,15 @@ describe('demo page', () => {
       expect(existsSync(join(root, 'demo', 'samples', ex.sample))).toBe(true);
     }
   });
+
+  it('gallery and playground link back to the repository with the GitHub mark', () => {
+    const root = join(here, '..');
+    for (const file of ['index.html', 'playground.html']) {
+      const html = readFileSync(join(root, 'demo', file), 'utf8');
+      expect(html, file).toContain('https://github.com/fengdonglu/mermaid-opm');
+      expect(html, file).toContain('aria-label="GitHub repository"');
+      expect(html, file).toContain('fill="currentColor"');
+      expect(html, file).toContain('<span>fengdonglu/mermaid-opm</span>');
+    }
+  });
 });

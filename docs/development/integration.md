@@ -16,13 +16,17 @@ The root import is the library/plugin API only (the `opm2svg` CLI is a separate
 `mermaid` (>= 11) is an **optional** peer dependency — only `registerOpm()` needs
 it at runtime.
 
+> **Not published yet.** `mermaid-opm` is not on npm, so `from 'mermaid-opm'`
+> does not resolve. Build the repository (`npm run build`) and import from the
+> built files as shown below (`./dist/index.js`, `./dist/mermaid-opm.mjs`).
+
 ## Bundlers (Vite, webpack)
 
 Both resolve the bare `mermaid` specifier and the package `exports` map for you.
 
 ```js
 // Vite or webpack
-import { renderSvg, registerOpm } from 'mermaid-opm';
+import { renderSvg, registerOpm } from './dist/index.js';
 import mermaid from 'mermaid';
 
 const svg = renderSvg('Order is physical.\nHandling is physical.\nHandling consumes Order.');
@@ -36,7 +40,7 @@ For the plugin path, register before rendering and disable auto-run first.
 ## Plain ESM in Node
 
 ```js
-import { renderSvg, renderModel } from 'mermaid-opm';
+import { renderSvg, renderModel } from './dist/index.js';
 
 const svg = renderSvg('Order is physical.\nHandling is physical.');
 const model = renderModel('Order is physical.');
@@ -57,15 +61,16 @@ The render core is DOM-free, so both functions are safe on the server:
   in any server-rendered page.
 
 ```js
-import { renderSvg } from 'mermaid-opm';
+import { renderSvg } from './dist/index.js';
 
 const svg = renderSvg(source); // string, no DOM required
 ```
 
-## CDN in the browser
+## Browser bundle
 
-Load the browser bundle directly from a CDN. It keeps a bare `import('mermaid')`,
-so provide an import map for `mermaid`:
+Serve the built `dist/mermaid-opm.mjs` (it is **not published to a CDN yet**).
+The bundle keeps a bare `import('mermaid')`, so provide an import map for
+`mermaid`:
 
 ```html
 <script type="importmap">
@@ -77,7 +82,7 @@ so provide an import map for `mermaid`:
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.0/dist/mermaid-opm.mjs';
+  import { registerOpm } from './dist/mermaid-opm.mjs'; // adjust to where you serve it
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
@@ -100,7 +105,7 @@ Without the import map, `registerOpm()` throws
 For batch or CI use, install the CLI or run it with `npx`:
 
 ```bash
-npx opm2svg model.opl -o model.svg
+node dist/cli/cli.js model.opl -o model.svg
 ```
 
 See [CLI](../usage/cli.md).

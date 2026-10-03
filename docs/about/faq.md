@@ -46,7 +46,7 @@ fenced `opm` block appears as source code, not a diagram. Two options:
   commit the result, and embed it:
 
   ```bash
-  node dist/cli/cli.js model.opl -o model.svg
+  npx opm2svg model.opl -o model.svg
   ```
 
   Then reference `model.svg` as an image in your Markdown.

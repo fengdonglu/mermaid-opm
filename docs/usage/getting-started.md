@@ -8,15 +8,10 @@ English | [中文](getting-started.zh.md)
 - as a **Mermaid external diagram plugin** in the browser, or
 - as the **`opm2svg` CLI** for batch conversion and CI.
 
-## Install (not published yet)
-
-`mermaid-opm` is **not published to npm yet**. Build it from the repository:
+## Install
 
 ```bash
-git clone https://github.com/fengdonglu/mermaid-opm
-cd mermaid-opm
-npm install
-npm run build
+npm i mermaid-opm mermaid
 ```
 
 `mermaid` (>= 11) is an optional peer dependency: you only need it for the
@@ -29,7 +24,7 @@ Register the external diagram before rendering, and disable Mermaid's auto-run
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from './dist/mermaid-opm.mjs'; // the built browser bundle
+import { registerOpm } from 'mermaid-opm';
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -60,7 +55,7 @@ See [OPL syntax](opl-syntax.md) for every sentence the parser understands.
 ## Minimal CLI example
 
 ```bash
-node dist/cli/cli.js model.opl -o model.svg
+npx opm2svg model.opl -o model.svg
 ```
 
 Given this `model.opl`:

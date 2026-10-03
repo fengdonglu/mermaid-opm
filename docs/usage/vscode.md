@@ -10,14 +10,13 @@ stdio.
 
 ## Install
 
-The extension is not published to any extension registry yet. Install it from a
+Install it from the VS Code Marketplace (search `mermaid-opm-vscode`), or from a
 VSIX:
 
-1. Get the `mermaid-opm-vscode-*.vsix` file — download it from the project's
-   GitHub **Releases** (the release workflow attaches it to each `v*` tag), or
-   build it locally with `npm run build` then
-   `npm run package:vsix -w mermaid-opm-vscode`.
-2. In VS Code, open the Command Palette, run **Extensions: Install from
+1. From the Marketplace: open the Extensions view in VS Code, search for
+   `mermaid-opm-vscode`, and click **Install**.
+2. From a VSIX: download `mermaid-opm-vscode-*.vsix` from the project's GitHub
+   **Releases**, open the Command Palette, run **Extensions: Install from
    VSIX…**, and pick the file.
 3. Reload when prompted.
 
@@ -57,8 +56,8 @@ match the CLI and the Mermaid plugin.
 
 The extension launches the `mermaid-opm-lsp` server as a bundled file over
 stdio; you do not install it separately for VS Code. The server is
-editor-agnostic and ships as the workspace package `mermaid-opm-lsp` (not yet
-published) exposing an `opm-lsp` binary, so other LSP clients can reuse it.
+editor-agnostic and is also published as the npm package `mermaid-opm-lsp`
+exposing an `opm-lsp` binary, so other LSP clients can reuse it.
 
 ## Not included yet
 

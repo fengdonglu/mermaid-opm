@@ -7,15 +7,10 @@
 - 作为浏览器中的 **Mermaid 外部图插件**；
 - 作为 **`opm2svg` 命令行工具**，用于批量转换与 CI。
 
-## 安装（尚未发布）
-
-`mermaid-opm` **尚未发布到 npm**。请从仓库自行构建：
+## 安装
 
 ```bash
-git clone https://github.com/fengdonglu/mermaid-opm
-cd mermaid-opm
-npm install
-npm run build
+npm i mermaid-opm mermaid
 ```
 
 `mermaid`（>= 11）是可选的 peer 依赖：只有使用插件时才需要。CLI 与库本身无需安装它。
@@ -26,7 +21,7 @@ npm run build
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from './dist/mermaid-opm.mjs'; // 构建出的浏览器 bundle
+import { registerOpm } from 'mermaid-opm';
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -57,7 +52,7 @@ Handled Order is physical.
 ## 最小 CLI 示例
 
 ```bash
-node dist/cli/cli.js model.opl -o model.svg
+npx opm2svg model.opl -o model.svg
 ```
 
 给定如下 `model.opl`：

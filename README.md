@@ -5,6 +5,7 @@ Render ISO 19450 OPM/OPL into Object-Process Diagrams (OPD) as a Mermaid externa
 ![OPL source beside its rendered OPD — the demo gallery](assets/gallery.png)
 
 [![CI](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml/badge.svg)](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/mermaid-opm.svg)](https://www.npmjs.com/package/mermaid-opm)
 [![Latest release](https://img.shields.io/github/v/release/fengdonglu/mermaid-opm)](https://github.com/fengdonglu/mermaid-opm/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -25,23 +26,16 @@ with [dagre](https://github.com/dagrejs/dagre), and emits SVG. It ships as:
   render them in the browser; and
 - a **CLI**, `opm2svg`, for batch conversion and CI.
 
-## Install (not published yet)
-
-`mermaid-opm` is **not published to npm yet**, and there is no VS Code
-Marketplace listing. To use it today, build it from the repository:
+## Install
 
 ```bash
-git clone https://github.com/fengdonglu/mermaid-opm
-cd mermaid-opm
-npm install
-npm run build
+npm i mermaid-opm mermaid
 ```
 
-This produces `dist/index.js` (library/plugin API for Node), `dist/mermaid-opm.mjs`
-(the browser bundle for the Mermaid plugin), and `dist/cli/cli.js` (the `opm2svg`
-CLI). For the Mermaid plugin in a browser, serve the built `dist/mermaid-opm.mjs`;
-the bundle keeps a bare `import('mermaid')`, so map `mermaid` to an ESM URL with an
-import map:
+`mermaid` (>= 11) is an optional peer dependency: install it only when you use
+the Mermaid plugin. The browser bundle is published too; load it from a CDN
+(or serve `dist/mermaid-opm.mjs`). It keeps a bare `import('mermaid')`, so map
+`mermaid` to an ESM URL with an import map:
 
 ```html
 <script type="importmap">
@@ -53,7 +47,7 @@ import map:
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from './dist/mermaid-opm.mjs'; // adjust the path to where you serve it
+  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.1/dist/mermaid-opm.mjs';
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
@@ -66,7 +60,7 @@ Register the external diagram before rendering:
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from './dist/mermaid-opm.mjs'; // the built browser bundle
+import { registerOpm } from 'mermaid-opm';
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -95,11 +89,9 @@ Handled Order is physical.
 ## Quick start — CLI
 
 ```bash
-node dist/cli/cli.js model.opl -o model.svg
-node dist/cli/cli.js model.opl -o model.svg --json model.json
+npx opm2svg model.opl -o model.svg
+npx opm2svg model.opl -o model.svg --json model.json
 ```
-
-(The `opm2svg` binary is available directly after `npm link`.)
 
 The input file is converted to SVG (default output name is the input with an
 `.svg` extension). `--json` additionally writes the parsed model and its
@@ -111,7 +103,9 @@ with a usage error.
 The `mermaid-opm-vscode` extension adds `.opl` syntax highlighting, live
 diagnostics, completion, hover, and an outline, plus the **OPM: Open Preview**
 and **OPM: Export SVG** commands. It bundles the `mermaid-opm-lsp` language
-server. See [VS Code extension](docs/usage/vscode.md) to install and use it.
+server. Install it from the VS Code Marketplace (search `mermaid-opm-vscode`)
+or from a VSIX in the GitHub Releases. See
+[VS Code extension](docs/usage/vscode.md).
 
 ## Demo
 

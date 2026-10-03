@@ -30,7 +30,7 @@ A minimal VS Code task:
     {
       "label": "OPM check",
       "type": "shell",
-      "command": "node dist/cli/cli.js \"${file}\" -o \"${file}.svg\"",
+      "command": "npx opm2svg \"${file}\" -o \"${file}.svg\"",
       "problemMatcher": {
         "owner": "opm",
         "fileLocation": ["relative", "${workspaceFolder}"],
@@ -57,7 +57,7 @@ For a live experience, depend on the library and read diagnostics directly. The
 parser never throws, so this is safe to call on every keystroke (debounced):
 
 ```ts
-import { renderModel } from './dist/index.js'; // after building the repository
+import { renderModel } from 'mermaid-opm';
 
 const model = renderModel(source);
 for (const d of model.diagnostics) {

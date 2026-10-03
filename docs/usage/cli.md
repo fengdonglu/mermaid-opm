@@ -5,11 +5,6 @@ English | [中文](cli.zh.md)
 `opm2svg` converts an `.opl` file into an SVG Object-Process Diagram and prints
 the parsed model's diagnostics to stderr.
 
-> **Not published yet.** `mermaid-opm` is not on npm, so there is no globally
-> installed `opm2svg` binary. Run it from a repository build with
-> `node dist/cli/cli.js <input.opl> ...`; after `npm link`, the `opm2svg` binary
-> is available directly. The examples below use `node dist/cli/cli.js`.
-
 ## Synopsis
 
 ```
@@ -73,19 +68,19 @@ Handling yields Handled Order.
 Convert it to `model.svg` (the default output path):
 
 ```bash
-node dist/cli/cli.js model.opl
+npx opm2svg model.opl
 ```
 
 Choose an explicit output path and also dump the model:
 
 ```bash
-node dist/cli/cli.js model.opl -o out/diagram.svg --json out/diagram.json
+npx opm2svg model.opl -o out/diagram.svg --json out/diagram.json
 ```
 
 Wrap it in a script and fail the build on errors:
 
 ```bash
-node dist/cli/cli.js model.opl -o model.svg || exit 1
+npx opm2svg model.opl -o model.svg || exit 1
 ```
 
 ## See also

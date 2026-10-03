@@ -6,10 +6,10 @@
 
 ## 安装
 
-扩展尚未发布到任何扩展市场。请从 VSIX 安装：
+从 VS Code Marketplace 搜索 `mermaid-opm-vscode` 安装，或从 VSIX 安装：
 
-1. 获取 `mermaid-opm-vscode-*.vsix` 文件——可从项目的 GitHub **Releases** 下载（Release 工作流会在每个 `v*` tag 上附带该文件），或在本地 `npm run build` 后执行 `npm run package:vsix -w mermaid-opm-vscode` 自行打包。
-2. 在 VS Code 中打开命令面板，运行 **Extensions: Install from VSIX…**，选择该文件。
+1. 市场安装：在 VS Code 的扩展视图中搜索 `mermaid-opm-vscode`，点击 **Install**。
+2. VSIX 安装：从项目的 GitHub **Releases** 下载 `mermaid-opm-vscode-*.vsix`，打开命令面板运行 **Extensions: Install from VSIX…**，选择该文件。
 3. 按提示重新加载。
 
 需要 VS Code **1.94** 或更高版本。
@@ -37,7 +37,7 @@
 
 ## 语言服务器
 
-扩展以打包文件形式、通过 stdio 启动 `mermaid-opm-lsp` 服务器；在 VS Code 中无需单独安装。该服务器与编辑器无关，作为 workspace 包 `mermaid-opm-lsp`（尚未发布）提供 `opm-lsp` 可执行文件，供其它 LSP 客户端复用。
+扩展以打包文件形式、通过 stdio 启动 `mermaid-opm-lsp` 服务器；在 VS Code 中无需单独安装。该服务器与编辑器无关，并作为 npm 包 `mermaid-opm-lsp` 提供 `opm-lsp` 可执行文件，供其它 LSP 客户端复用。
 
 ## 尚未包含
 

@@ -5,6 +5,7 @@
 ![OPL 源码与其渲染的 OPD 并排 —— 演示画廊](assets/gallery.png)
 
 [![CI](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml/badge.svg)](https://github.com/fengdonglu/mermaid-opm/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/mermaid-opm.svg)](https://www.npmjs.com/package/mermaid-opm)
 [![Latest release](https://img.shields.io/github/v/release/fengdonglu/mermaid-opm)](https://github.com/fengdonglu/mermaid-opm/releases/latest)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -21,18 +22,13 @@
 - **Mermaid 外部图表插件**——编写 `opm` 代码块，由 Mermaid 在浏览器中渲染；
 - **CLI**（`opm2svg`）——用于批量转换与 CI。
 
-## 安装（尚未发布）
-
-`mermaid-opm` **尚未发布到 npm**，也没有 VS Code Marketplace 条目。目前请从仓库自行构建使用：
+## 安装
 
 ```bash
-git clone https://github.com/fengdonglu/mermaid-opm
-cd mermaid-opm
-npm install
-npm run build
+npm i mermaid-opm mermaid
 ```
 
-构建会产出 `dist/index.js`（Node 用的库/插件 API）、`dist/mermaid-opm.mjs`（Mermaid 插件的浏览器 bundle）与 `dist/cli/cli.js`（`opm2svg` CLI）。浏览器中使用 Mermaid 插件时，请托管构建出的 `dist/mermaid-opm.mjs`；该 bundle 内部保留裸 `import('mermaid')`，因此需用 import map 把 `mermaid` 映射到 ESM URL：
+`mermaid`（>= 11）是可选的 peer 依赖：只有使用 Mermaid 插件时才需要安装。浏览器 bundle 也已发布，可直接从 CDN 加载（或托管 `dist/mermaid-opm.mjs`）。该 bundle 内部保留裸 `import('mermaid')`，因此需用 import map 把 `mermaid` 映射到 ESM URL：
 
 ```html
 <script type="importmap">
@@ -44,7 +40,7 @@ npm run build
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from './dist/mermaid-opm.mjs'; // 按你托管的路径调整
+  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.1/dist/mermaid-opm.mjs';
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
@@ -57,7 +53,7 @@ npm run build
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from './dist/mermaid-opm.mjs'; // 构建出的浏览器 bundle
+import { registerOpm } from 'mermaid-opm';
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -86,17 +82,15 @@ Handled Order is physical.
 ## 快速开始 —— CLI
 
 ```bash
-node dist/cli/cli.js model.opl -o model.svg
-node dist/cli/cli.js model.opl -o model.svg --json model.json
+npx opm2svg model.opl -o model.svg
+npx opm2svg model.opl -o model.svg --json model.json
 ```
-
-（执行 `npm link` 后可直接使用 `opm2svg` 命令。）
 
 输入文件会转换为 SVG（默认输出名为输入名加 `.svg` 后缀）。`--json` 会额外写出解析后的模型及其诊断。存在 `error` 级诊断时以非零码退出；未知参数会以用法错误拒绝。
 
 ## 编辑器（VS Code）
 
-`mermaid-opm-vscode` 扩展为 `.opl` 提供语法高亮、实时诊断、补全、悬停与大纲，并带有 **OPM: Open Preview** 与 **OPM: Export SVG** 两个命令。它内置 `mermaid-opm-lsp` 语言服务器。安装与使用见 [《VS Code 扩展》](docs/usage/vscode.zh.md)。
+`mermaid-opm-vscode` 扩展为 `.opl` 提供语法高亮、实时诊断、补全、悬停与大纲，并带有 **OPM: Open Preview** 与 **OPM: Export SVG** 两个命令。它内置 `mermaid-opm-lsp` 语言服务器。可从 VS Code Marketplace 搜索 `mermaid-opm-vscode` 安装，或从 GitHub Releases 下载 VSIX 安装。详见 [《VS Code 扩展》](docs/usage/vscode.zh.md)。
 
 ## 演示
 

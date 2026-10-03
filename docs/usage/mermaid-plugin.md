@@ -10,7 +10,7 @@ any source whose first line is `opm` (typically a fenced `opm` block or a
 
 ```js
 import mermaid from 'mermaid';
-import { registerOpm } from './dist/mermaid-opm.mjs'; // the built browser bundle
+import { registerOpm } from 'mermaid-opm';
 
 mermaid.initialize({ startOnLoad: false });
 await registerOpm();
@@ -77,7 +77,7 @@ ESM build; otherwise `await registerOpm()` throws
 </script>
 <script type="module">
   import mermaid from 'mermaid';
-  import { registerOpm } from './dist/mermaid-opm.mjs';
+  import { registerOpm } from 'https://cdn.jsdelivr.net/npm/mermaid-opm@0.1.1/dist/mermaid-opm.mjs';
 
   mermaid.initialize({ startOnLoad: false });
   await registerOpm();
